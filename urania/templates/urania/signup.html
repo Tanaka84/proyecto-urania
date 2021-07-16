@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='container' style='padding-left: 20%;'>
+  <div class="" style="width: 75%;">
+    <div class="px-4 pt-5 my-5 text-center border-bottom">
+      <h2>Crear cuenta</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+          {{ field.label_tag }}<br>
+          {{ field }}
+          {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>
+<p><b>Por favor guarde su contraseña en un lugar seguro, mientras Urania este en fase Beta no sera posible reestablecer
+    las contraseñas perdidas</b></p>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{%block content%}
+<form method='POST'>
+  {%csrf_token%}
+  <div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+      <h1 class="display-4 fw-bold lh-1 align-items-center">Analisis de sentimientos para Twitter</h1>
+      <p id="todo" class="lead">Escribe una palabra o frase corta y la cantidad de tweets que deseas buscar, por ahora
+        es
+        recomendable que las busquedas sean entre 100 a 900 tuits por intento. Presiona el boton que aparecera luego
+        de
+        llenar los campos para
+        comenzar el análisis.</p>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+      </div>
+      <div class='form-group'>
+        <label for="query">Palabras clave:</label>
+        <input type="text" class='form-control' name="query" id='query' oninput="check()" />
+      </div>
+      <div class='form-group p-2'>
+        <label for="number_of_tweets">Cantidad de tweets:</label>
+        <input type="text" name="number_of_tweets" class='form-control' id="number" oninput="check()" value=100 />
+      </div>
+      <div class='form-group p-3'>
+        <input type="submit" class="btn btn-primary" id="button" style="visibility: hidden" onclick="loading()"
+          value="Enviar"'>
+      </div>
+</form>
+<div id="mensaje"></div>
+<br>
+</div>
+
+{%endblock%}
+{%block javascript%}
+{%load static%}
+<script>
+  function check() {
+    let value = document.getElementById("number").value;
+    let query = document.getElementById("query").value;
+    console.log(value);
+    value = parseInt(value);
+    if (isNaN(value)) {
+      document.getElementById("mensaje").innerHTML = `<p style="color: red"> La cantidad de tweets debe ser un numero
+        valido </p>`
+      document.getElementById("button").style = "visibility: hidden"
+    } else { document.getElementById("mensaje").innerHTML = `` }
+
+    if (isNaN(value) === false && query.length > 1) {
+      document.getElementById("button").style = "visibility: visible"
+    }
+  }
+
+  function loading() {
+    let todo = document.getElementById("todo")
+    todo.innerHTML = '';
+    todo.innerHTML = `<br><h3>Preparando el analisis</h3><br>`
+  }
+</script>
+        {%endblock%}

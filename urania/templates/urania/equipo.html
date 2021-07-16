@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{%block content%}
+{%load static%}
+
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <h1 class="display-3 fw-bold lh-1 mb-3">Gustavo La Fontaine</h1>
+            <h3 class="display-5 fw-bold lh-1 mb-3">Lider de Proyecto</h3>
+            <p class="lead">Desarrolador y Psicologo Social maestrando en filosofía, profesor de la Universidad Católica
+                Andres Bello, investigador del CIFH. Actualmente llevando la linea de ciberpsicologia.</p>
+        </div>
+        <div class="col-lg-6">
+            <img src="{% static 'images/lafon.png'%}" class="d-block mx-lg-auto img-fluid rounded-circle"
+                alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{%block content%}
+{%load static%}
+
+
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-4 fw-bold lh-1">¿Qué es Urania?</h1>
+            <p class="lead">El mundo de la tecnología avanza a pasos agigantados y el reto es mantenernos a la par con
+                lo que nos puede ofrecer. Desde el Centro de Investigación y Formación Humanística creamos Urania para
+                ofrecer una herramienta introductoria y de libre acceso al analisis de sentimientos del lenguaje natural
+                en redes sociales. </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                <input type="button" onclick="location.href=`{%url 'equipo'%}`"" class=" btn btn-primary btn-lg px-4
+                    me-md-2 fw-bold" " value=" Conoce al equipo" />
+            </div>
+        </div>
+        <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+            <img class="rounded-lg-3" src="{%static  'images/example.jpg'%}" alt="" width="720">
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden">
+            <img class="rounded-lg-3" src="{%static 'images/social_networks.png'%}" alt=""
+                style=" height: 400px">
+        </div>
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-4 fw-bold lh-1">Explora el mundo de las redes sociales</h1>
+            <p class="lead">Comenzamos con Twitter, pero poco a poco iremos integrando otras redes sociales como Reddit
+                y Facebook. Urania es una ventana a los discursos del mundo digital</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                <input type="button" onclick="location.href=`{%url 'herramientas'%}`"" class=" btn btn-primary btn-lg
+                    px-4 me-md-2 fw-bold" " value=" Empieza a investigar" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden">
+                <h1 class="display-4 fw-bold lh-1">Inteligencia Artificial a tu alcance</h1>
+                <p class="lead">Nuestro objetivo es abrir nuevos espacios para que todos tengamos acceso a las ventajas
+                    de la tecnología. Con Urania puedes hacer analisis de sentimiento valiendote del poder de la
+                    inteligencia
+                    artificial sin importar tu formación</p>
+            </div>
+            <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 rounded overflow-hidden">
+
+                <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                    <img class="rounded" src="{%static 'images/AI.jpg'%}" alt="" style=" height: 400px">
+                </div>
+            </div>
+        </div>
+        </div">
+
+        <div class="container my-5">
+            <div class="row p-1 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+                <div class="col-lg-4 offset-lg-0 p-0">
+                    <img class="rounded" src="{%static 'images/github.png'%}" alt="">
+                    <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                    </div>
+
+                </div>
+                <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 rounded overflow-hidden">
+                    <h1 class="display-4 fw-bold lh-1">Ciencia Abierta</h1>
+                    <p class="lead">Urania no podria existir sin el software libre ni la ciencia abierta. Siendo
+                        creyentes
+                        en el
+                        potencial del desarrollo en comunidad, el codigo fuente de Urania esta disponible en
+                        un repositorio GitHub.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                    </div>
+                </div>
+            </div>
+            </div">
+
+
+            {%endblock%}
+            {%block javascript%}
+
+
+            {%endblock%}
