@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{%block content%}
+{%load static%}
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{% static 'images/diccionario.png'%}" alt="Card image cap"
+                style='height: 220px'>
+            <div class="card-body">
+                <h5 class="card-title">Lexicón en castellano</h5>
+                <p class="card-text">Contesta una encuesta sencilla y ayudanos a validar un lexicón adaptado a la
+                    población venezolana</p>
+                <a href="{%url 'presentacion'%}" class="btn btn-primary">Validación de Diccionario </a>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{% static 'images/twitter.png'%}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Analisis de sentimiento de Twitter</h5>
+                <p class="card-text">Realiza un analisis de sentimiento basado en reglas recuperando tuits en tiempo
+                    real.</p>
+                <a href="{%url 'twitter_fetch'%}" class="btn btn-primary">Análisis de sentimientos</a>
+            </div>
+        </div>
+
+    </div>
+    {%endblock%}

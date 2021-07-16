@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{%block headscript%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+<script src="https://cdn.anychart.com/releases/v8/js/anychart-tag-cloud.min.js"></script>
+{%endblock%}
+{%block content%}
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Resultados para la busqueda de {{query}}</h1>
+    <p class="display-10 fw-bold">** Los resultados presentados en esta pagina son producto de un algoritmo basado en
+        reglas y contrastados con un lexicon. Futuras iteraciones del proyecto introduciran sistemas más robustos,
+        incluyendo deep learning.</p>
+</div>
+
+<div class="divider"></div>
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Analisis de sentimiento</h1>
+    <h1 class="display-4 fw-bold">Resultado: {{analisis}}</h1>
+    <div class="col-lg-6 mx-auto">
+        {%if analisis > 0.10%}
+        <p class="lead mb-4">El resultado apunta a que los sentimientos prevalentes en Twitter respecto a tu busqueda
+            tienden a ser positivos</p>
+        {%elif analisis < -0.10 %} <p class="lead mb-4">El resultado apunta a que los sentimientos prevalentes en
+            Twitter respecto a tu busqueda tienden a ser negativos</p>
+            {%else%}
+            <p class="lead mb-4">El resultado apunta a que la mayoria de los términos asociados a tu busqueda
+                son neutrales, o hay una fuerte polarización acerca del tema (Cantidades similares de palabras positivas
+                o negativas).</p>
+            {%endif%}
+
+            <p class="lead mb-4">El analisis de sentimiento arroja un resultado que puede ir de -1 a +1. Los resultados
+                cercanos a -1 implican prevalencia de sentimientos negativos asociados a tu busqueda, mientras que los
+                valores cercanos a +1 implican prevalencia de sentimientos positivos</p>
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+
+            </div>
+    </div>
+</div>
+
+<div class="b-example-divider"></div>
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Polaridad</h1>
+    {%if polaridad == 'positiva'%}
+    <h1 class="display-4 fw-bold text-primary">{{polaridad}}</h1>
+    {%elif polaridad == 'negativa'%}
+    <h1 class="display-4 fw-bold text-danger">{{polaridad}}</h1>
+    {%endif%}
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">En términos generales la polaridad se puede entender como la prevalencia de sentimientos
+            positivos o negativos, sin embargo, esto debe ser interpretado en base a
+            los demas resultados. Por ejemplo, aun cuando un texto tenga polaridad positiva, la prevalencia de términos
+            neutrales puede indicarnos que estan tendencia no es relevante.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        </div>
+    </div>
+</div>
+
+<div class="b-example-divider"></div>
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Negatividad</h1>
+    <h1 class="display-4 fw-bold  text-danger">{{negatividad}}</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">La negatividad se obtiene dividiendo la cantidad de palabras asociadas con sentimientos
+            negativos a la totalidad de palabras que son procesadas. Este resultado nos ayuda a estimar la prevalencia
+            de emociones negativas en una busqueda.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        </div>
+    </div>
+</div>
+
+<div class="b-example-divider"></div>
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold">Porcentaje de emocionalidad</h1>
+    <h1 class="display-4 fw-bold">{{ratio}}%</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Este resultado es el producto de dividir todas las palabras con una carga emocional entre
+            el
+            total de palabras procesadas y multiplicar el resultado por 100. Por tanto, nos señala que proporción de
+            palabras esta asociada con contenido
+            afectivo</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <canvas id="frequency"></canvas>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <canvas id="posneg"></canvas>
+    </div>
+</div>
+
+
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <h1 class="display-4 fw-bold">Nube de palabras</h1>
+        <div class="container align-items-center" style="position: relative;">
+            <div id='nube' class='align-items-center' style='height: 600px;'></div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="px-4 pt-5 my-5 text-center border-bottom align-items-center">
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+
+    </div>
+</div>
+</div>
+
+{%endblock%}
+{% block javascript %}
+<script>
+    //Crear variables para los graficos
+    var ctxfreq = document.getElementById('frequency').getContext('2d');
+    var cloud_label = {{ lista_de_palabras_comunes| safe }};
+    var cloud_data = {{ lista_de_frecuencias | safe}}
+    var cloud_dict = []
+
+    for (let i = 0; i < cloud_label.length; i++) {
+        let cloud = { x: cloud_label[i], value: cloud_data[i] }
+        cloud_dict.push(cloud)
+    }
+    var frequency_label = cloud_label.slice(0, 21);
+    var frequency_data = cloud_data.slice(0, 21);
+    var ctxposneg = document.getElementById('posneg').getContext('2d');
+    var positivo = {{ positive_counter }}
+    var negativo = {{ negative_counter }}
+
+    //grafico de barras de positivo y negativo
+    var posneg_chart = new Chart(ctxposneg, {
+        type: 'bar',
+        data: {
+            labels: ['Palabras positivas', 'Palabras negativas'],
+            datasets: [{
+                axis: 'y',
+                label: 'Comparación de las palabras positivas y negativas',
+                data: [positivo, negativo],
+                backgroundColor: [
+                    'rgba(31, 58, 147, 0.2)',
+                    'rgba(207, 0, 15, 0.2)'
+
+                ],
+                borderColor: [
+                    'rgba(31, 58, 147, 1)',
+                    'rgba(207, 0, 15, 1)'
+                ],
+                borderWidth: 1
+
+
+            }]
+        },
+        options: {
+            indexAxis: 'y'
+        }
+
+    })
+
+
+
+    // grafico de linea de las 10 palabras m[as frecuentes]
+    var frequencyChart = new Chart(ctxfreq, {
+        type: 'line',
+        data: {
+            labels: frequency_label,
+            datasets: [{
+                label: 'Frecuencia de las 20 palabras más comunes relacionadas con {{query}}',
+                data: frequency_data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                    'rgba(255, 159, 64, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    chart = anychart.tagCloud(cloud_dict)
+    chart.container('nube')
+    chart.draw()
+
+
+</script>
+{%endblock%}

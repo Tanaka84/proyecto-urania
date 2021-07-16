@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+    <div class=" p-3 p-lg-5 pt-lg-3">
+      <h1 id='word' class="display-4 fw-bold lh-1">{{pal}}</h1>
+      <form method="post">
+        <div id='id' style="display:none">{{pal.id}}</div>
+        <button type='button' class="btn btn-primary" value="-2">Muy negativa</button>
+        <button type='button' class="btn btn-primary" value="-1">Negativa</button>
+        <button type='button' class="btn btn-primary" value="0">Neutral</button>
+        <button type='button' class="btn btn-primary" value="1">Positiva</button>
+        <button type='button' class="btn btn-primary" value="2">Muy Positiva</button>
+      </form>
+    </div>
+
+    {%endblock%}
+    {%block javascript%}
+    {%load static%}
+    <script>
+      var COUNTER = 0;
+      $(document).ready(function () {
+        $('button').click(function () {
+          COUNTER += 1;
+          $.ajax({
+            url: "{%url 'voto'%}",
+            type: "post", // or "get"
+            data: { "palabra": $("#id").text(), "vote": $(this).val(), 'oportunidades': COUNTER },
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            success: function () {
+              if (COUNTER >= 10) {
+                console.log('listo')
+                window.location.href = "{%url 'cierre'%}"
+              }
+            }
+          })
+
+          $.get("{%url 'voto'%}", function (data) {
+            document.getElementById('word').innerHTML = data['palabra']
+            document.getElementById('id').innerHTML = data['id']
+          })
+        })
+      })
+    </script>
+    {%endblock%}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{%block content%}
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-4 fw-bold lh-1">Validador de diccionario</h1>
+            {%if no_de_votos > 0%}
+            <h2 class="display-7 fw-bold lh-1">{{user}} has votado {{no_de_votos}} veces</h2>
+            {%else%}
+            <h3 class="display-7 fw-bold lh-1">{{user}}, ¡Es la primera vez que votas!</h3>
+            {%endif%}
+            <p class="lead">A continuación te vamos a presentar diez palabras escogidas al azar, tendras que elegir
+                entre cinco opciones que van
+                desde "muy negativa" a "muy positiva", evalua que tan positiva o negativa te parece la palabra y
+                seleccione la opción
+                que mejor se adecue a tu opinion </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-center mb-4 mb-lg-3">
+                <button type=button class=" btn btn-primary" onclick=location.href='{% url "voto" %}'>Presiona aqui para
+                    comenzar </button>
+                <button type=button class="btn btn-primary" onclick=location.href='{% url "landing" %}'>Regresa al
+                    inicio</button>
+            </div>
+        </div>
+        {%load static%}
+    </div>
+</div>
+</div>
+{%endblock%}

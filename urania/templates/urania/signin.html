@@ -1,0 +1,28 @@
+{% extends 'base.html' %} {%block content%}
+<div class='container' style='padding-left: 29%;'>
+  <div class="card" style="width: 500px;">
+    <div class="px-4 pt-5 my-5 text-center border-bottom">
+      {% if fracaso %}
+      <p>Usuario o contraseña equivocada</p>
+      {%endif%}
+      <form method="post">
+        {% csrf_token %}
+        <h2>Inicia sesion</h2>
+        <div class='row align-items-center'>
+          <label for="username">Usuario:</label>
+          <input type="text" name="username" />
+        </div>
+        <div class='row align-items-center'>
+          <label for="password">Contraseña:</label>
+          <input type="password" name="password" />
+          <br>
+        </div>
+        <button class="btn btn-primary">submit</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+¿Eres un usuario nuevo?<a href="{% url 'signup'%}""> Presiona aqui para suscribirte</a>
+
+{% endblock %}

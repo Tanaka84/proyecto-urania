@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{%block content%}
+{% load static %}
+<div class="container my-5">
+    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <h1 class="display-4 fw-bold lh-1">Has completado esta ronda de votos</h1>
+            <p class="lead">Gracias por apoyar el Proyecto Urania</p>
+        </div>
+        <div class="col-lg-4 offset-lg-1 p-0">
+            <img class="rounded-lg-3" src="{% static 'images/loading.gif'%}" alt="" width="200">
+        </div>
+    </div>
+</div>
+<h1></h1>
+<h1> </h1>
+
+
+
+{%endblock%}
+{%block javascript%}
+<script>
+    setTimeout(function () {
+        window.location.href = " {%url 'presentacion' %}";
+    }, 5000);</script>
+{%endblock%}
