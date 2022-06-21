@@ -5,7 +5,9 @@
         <div class="p-3 p-lg-5 pt-lg-3">
             <h1 class="display-4 fw-bold lh-1">Validador de diccionario</h1>
             {%if no_de_votos > 0%}
-            <h2 class="display-7 fw-bold lh-1">{{user}} has votado {{no_de_votos}} veces</h2>
+
+            <h2 class="display-7 fw-bold lh-1">Hola {{user}}, ¡Bienvenido! </h2>
+
             {%else%}
             <h3 class="display-7 fw-bold lh-1">{{user}}, ¡Es la primera vez que votas!</h3>
             {%endif%}
@@ -25,4 +27,6 @@
     </div>
 </div>
 </div>
+
 {%endblock%}
+

@@ -44,6 +44,9 @@ def twitter_fetch(request):
                 break
         text_to_analyze = " ".join(text_to_analyze)
         lista_de_tokens = clean_text(text_to_analyze, query, language)
+
+        if len(lista_de_tokens) < 100:
+            return render(request, template_name = 'twitter.html', context = {"disculpa":"Perdon, no hemos encontrado suficientes palabras para correr el análisis, intenta despues, aumenta la cantidad de tuits o cambia la palabra clave"})
         request.session['lista_de_tokens'] = lista_de_tokens
         request.session['query'] = query
         return redirect('analyze')
@@ -70,19 +73,21 @@ def analyze(request):
         except:
             continue
 
-    analisis_de_sentimiento = round(
-        (positive_counter - negative_counter)/total_counter, 3)
-    negatividad = round(negative_counter/total_counter, 3)
-    ratio = round(((positive_counter+negative_counter)/total_counter)*100, 2)
-    if analisis_de_sentimiento < 0:
-        polaridad = 'negativa'
-    if analisis_de_sentimiento > 0:
-        polaridad = 'positiva'
-    frecuencia = Counter(lista_de_tokens).most_common(
-        int(round(len(lista_de_tokens)/2, 0)))
-    lista_de_palabras_comunes = [word for word, count in frecuencia]
-    lista_de_frecuencias = [count for word, count in frecuencia]
-    ctx = {'positive_counter': positive_counter, 'negative_counter': negative_counter, 'query': query, 'negatividad': negatividad, 'analisis': analisis_de_sentimiento,
+    try:
+        analisis_de_sentimiento = round((positive_counter - negative_counter)/total_counter, 3)
+        negatividad = round(negative_counter/total_counter, 3)
+        ratio = round(((positive_counter+negative_counter)/total_counter)*100, 2)
+        if analisis_de_sentimiento < 0:
+            polaridad = 'negativa'
+        if analisis_de_sentimiento > 0:
+            polaridad = 'positiva'
+        frecuencia = Counter(lista_de_tokens).most_common(
+            int(round(len(lista_de_tokens)/2, 0)))
+        lista_de_palabras_comunes = [word for word, count in frecuencia]
+        lista_de_frecuencias = [count for word, count in frecuencia]
+        ctx = {'positive_counter': positive_counter, 'negative_counter': negative_counter, 'query': query, 'negatividad': negatividad, 'analisis': analisis_de_sentimiento,
            'ratio': ratio, 'polaridad': polaridad, "lista_de_palabras_comunes": lista_de_palabras_comunes, 'lista_de_frecuencias': lista_de_frecuencias}
+        return render(request, template_name='analyze.html', context=ctx)
+    except:
+        return render(request, template_name='twitter.html', context= {"disculpa": "Perdon, parece que algo ha salido mal, espera un poco o intenta cambiar algunos criterios de tu busqueda"} )
 
-    return render(request, template_name='analyze.html', context=ctx)
