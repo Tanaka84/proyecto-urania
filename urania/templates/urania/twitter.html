@@ -5,10 +5,12 @@
   <div class="container my-5">
     <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
       <h1 class="display-4 fw-bold lh-1 align-items-center">Analisis de sentimientos para Twitter</h1>
+
       {% if disculpa%}
 	<h2 style = "color: red;">{{disculpa}}</h2>
 	{%endif%}
 	<p id="todo" class="lead">Escribe una palabra o frase corta y la cantidad de tweets que deseas buscar, por ahora
+
         es
         recomendable que las busquedas sean entre 100 a 900 tuits por intento. Presiona el boton que aparecera luego
         de
@@ -59,4 +61,6 @@
     todo.innerHTML = `<br><h3>Preparando el analisis</h3><br>`
   }
 </script>
+
         {%endblock%}
+

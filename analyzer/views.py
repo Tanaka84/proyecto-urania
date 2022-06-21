@@ -44,6 +44,7 @@ def twitter_fetch(request):
                 break
         text_to_analyze = " ".join(text_to_analyze)
         lista_de_tokens = clean_text(text_to_analyze, query, language)
+
         if len(lista_de_tokens) < 100:
             return render(request, template_name = 'twitter.html', context = {"disculpa":"Perdon, no hemos encontrado suficientes palabras para correr el análisis, intenta despues, aumenta la cantidad de tuits o cambia la palabra clave"})
         request.session['lista_de_tokens'] = lista_de_tokens
@@ -71,6 +72,7 @@ def analyze(request):
                 total_counter += 1
         except:
             continue
+
     try:
         analisis_de_sentimiento = round((positive_counter - negative_counter)/total_counter, 3)
         negatividad = round(negative_counter/total_counter, 3)
@@ -88,3 +90,4 @@ def analyze(request):
         return render(request, template_name='analyze.html', context=ctx)
     except:
         return render(request, template_name='twitter.html', context= {"disculpa": "Perdon, parece que algo ha salido mal, espera un poco o intenta cambiar algunos criterios de tu busqueda"} )
+
